@@ -8,7 +8,7 @@ import sys
 
 # ---------------- Configuration ----------------
 SCOPES = ['https://www.googleapis.com/auth/drive']
-CREDENTIALS_FILE = 'client_secret_966125481217-ftoha82uccnfg2f4mg6h0it05k2m0tor.apps.googleusercontent.com.json'
+CREDENTIALS_FILE = 'client_secret.json'
 TOKEN_FILE = 'token.pickle'
 
 SHARED_DRIVE_ID = '0AKbbJo0Vmj08Uk9PVA'  # Arsenrobotics Media
