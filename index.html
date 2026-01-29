@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ar's website</title>
+<title>Photo Gallery</title>
 <style>
   body { font-family: Arial, sans-serif; margin: 20px; }
   h1 { text-align: center; }
@@ -38,6 +38,7 @@ fetch('gallery.json')
     const container = document.getElementById('gallery');
 
     data.forEach(folder => {
+      // Folder title
       const folderTitle = document.createElement('h2');
       folderTitle.textContent = folder.folder;
       folderTitle.style.width = '100%';
@@ -48,33 +49,36 @@ fetch('gallery.json')
         const div = document.createElement('div');
         div.className = 'photo';
 
-        // ONLY USE THUMBNAIL URL METHOD
+        // Thumbnail (w200)
         const img = document.createElement('img');
-        img.src = `https://drive.google.com/thumbnail?id=${p.id}&sz=w200`; // w200 thumbnail
+        img.src = `https://drive.google.com/thumbnail?id=${p.id}&sz=w200`;
         div.appendChild(img);
 
+        // Caption (basic info)
         const caption = document.createElement('div');
         caption.className = 'caption';
         caption.textContent = `${p.metadata.aircraft || ""} ${p.metadata.registration || ""}`;
         div.appendChild(caption);
 
-        // Click to open modal (full-size also using thumbnail but larger)
+        // Click to open modal (full-size thumbnail w1920)
         div.addEventListener('click', () => {
-          document.getElementById('modal-img').src = `https://drive.google.com/thumbnail?id=${p.id}&sz=w1920`; // large preview
+          document.getElementById('modal-img').src = `https://drive.google.com/thumbnail?id=${p.id}&sz=w1920`;
+          const md = p.metadata || {};
           document.getElementById('modal-info').textContent =
-            `Date: ${p.metadata.date || ""} | Airport: ${p.metadata.airport || ""} | Registration: ${p.metadata.registration || ""} | Aircraft: ${p.metadata.aircraft || ""}`;
+            `Date: ${md.date || ""} | Airport: ${md.airport || ""} | Registration: ${md.registration || ""} | Aircraft: ${md.aircraft || ""}`;
           document.getElementById('modal').style.display = 'block';
         });
 
         container.appendChild(div);
       });
     });
-  });
+  })
+  .catch(err => console.error("Failed to load gallery.json:", err));
 
 // Close modal
 document.querySelector('#modal .close').onclick = () => {
   document.getElementById('modal').style.display = 'none';
-}
+};
 </script>
 
 </body>
