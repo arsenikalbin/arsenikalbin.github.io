@@ -4,78 +4,19 @@
 <meta charset="UTF-8">
 <title>Photo Gallery</title>
 <style>
-  body { font-family: Arial, sans-serif; margin: 20px; }
+  body { font-family: Arial, sans-serif; margin: 20px; text-align: center; }
   h1 { text-align: center; }
-  #gallery { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
-  .photo { border: 1px solid #ccc; padding: 5px; width: 180px; text-align: center; cursor: pointer; transition: transform 0.2s; }
-  .photo:hover { transform: scale(1.05); }
+  .photo { border: 1px solid #ccc; padding: 5px; display: inline-block; width: 200px; }
   .photo img { width: 100%; height: auto; display: block; }
-  .caption { font-size: 0.85em; margin-top: 5px; color: #333; }
-
-  /* Fullscreen modal */
-  #modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); overflow: auto; }
-  #modal img { display: block; max-width: 90%; max-height: 80%; margin: 50px auto 10px auto; }
-  #modal .info { text-align: center; color: #fff; font-size: 1.1em; }
-  #modal .close { position: absolute; top: 20px; right: 40px; font-size: 40px; font-weight: bold; color: #fff; cursor: pointer; }
 </style>
 </head>
 <body>
 
 <h1>Photo Gallery</h1>
-<div id="gallery"></div>
 
-<!-- Fullscreen modal -->
-<div id="modal">
-  <span class="close">&times;</span>
-  <img id="modal-img" src="" alt="">
-  <div class="info" id="modal-info"></div>
+<div class="photo">
+  <img src="https://drive.google.com/thumbnail?id=1kDssmXz3xcKCwIZHFxgyhLFW-tD7wQv9&sz=w1000" alt="My Image">
 </div>
-
-<script>
-fetch('gallery.json')
-  .then(res => res.json())
-  .then(data => {
-    const container = document.getElementById('gallery');
-
-    data.forEach(folder => {
-      const folderTitle = document.createElement('h2');
-      folderTitle.textContent = folder.folder;
-      folderTitle.style.width = '100%';
-      folderTitle.style.textAlign = 'center';
-      container.appendChild(folderTitle);
-
-      folder.photos.forEach(p => {
-        const div = document.createElement('div');
-        div.className = 'photo';
-
-        // ONLY USE THUMBNAIL URL METHOD
-        const img = document.createElement('img');
-        img.src = `https://drive.google.com/thumbnail?id=${p.id}&sz=w200`; // w200 thumbnail
-        div.appendChild(img);
-
-        const caption = document.createElement('div');
-        caption.className = 'caption';
-        caption.textContent = `${p.metadata.aircraft || ""} ${p.metadata.registration || ""}`;
-        div.appendChild(caption);
-
-        // Click to open modal (full-size also using thumbnail but larger)
-        div.addEventListener('click', () => {
-          document.getElementById('modal-img').src = `https://drive.google.com/thumbnail?id=${p.id}&sz=w1920`; // large preview
-          document.getElementById('modal-info').textContent =
-            `Date: ${p.metadata.date || ""} | Airport: ${p.metadata.airport || ""} | Registration: ${p.metadata.registration || ""} | Aircraft: ${p.metadata.aircraft || ""}`;
-          document.getElementById('modal').style.display = 'block';
-        });
-
-        container.appendChild(div);
-      });
-    });
-  });
-
-// Close modal
-document.querySelector('#modal .close').onclick = () => {
-  document.getElementById('modal').style.display = 'none';
-}
-</script>
 
 </body>
 </html>
