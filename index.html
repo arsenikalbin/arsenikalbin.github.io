@@ -1,11 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Arseni Kalbin – Aviation Photography</title>
+<meta charset="UTF-8">
+<title>Photo Gallery</title>
+<style>
+  #gallery { display:flex; flex-wrap:wrap; gap:10px; }
+  .photo { border:1px solid #ccc; padding:5px; width:200px; }
+  .photo img { width:100%; }
+</style>
 </head>
 <body>
-  <h1>Aviation Photography</h1>
-  <p>Coming soon.</p>
+<h1>Photo Gallery</h1>
+<div id="gallery"></div>
+
+<script>
+fetch('gallery.json')
+  .then(r => r.json())
+  .then(data => {
+    const container = document.getElementById('gallery');
+    data.forEach(folder => {
+      const title = document.createElement('h2');
+      title.textContent = folder.folder;
+      container.appendChild(title);
+      folder.photos.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'photo';
+        const img = document.createElement('img');
+        img.src = p.url.replace("/view?usp=sharing", "?export=download"); // force download
+        div.appendChild(img);
+        if(p.metadata) {
+          const caption = document.createElement('p');
+          caption.textContent = `${p.metadata.aircraft || ""} ${p.metadata.reg || ""} at ${p.metadata.airport || ""}`;
+          div.appendChild(caption);
+        }
+        container.appendChild(div);
+      });
+    });
+  });
+</script>
 </body>
 </html>
