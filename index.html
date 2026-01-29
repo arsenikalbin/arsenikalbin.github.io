@@ -11,12 +11,32 @@
 </head>
 <body>
 <h1>Photo Gallery</h1>
+<div id="gallery"></div>
 
-<div id="gallery">
-  <div class="photo">
-    <img src="https://drive.google.com/uc?export=view&id=19-32ZX1riiMvw2iKqASAvP3bM6pL-Iqv" alt="My Image">
-  </div>
-</div>
-
+<script>
+fetch('gallery.json')
+  .then(r => r.json())
+  .then(data => {
+    const container = document.getElementById('gallery');
+    data.forEach(folder => {
+      const title = document.createElement('h2');
+      title.textContent = folder.folder;
+      container.appendChild(title);
+      folder.photos.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'photo';
+        const img = document.createElement('img');
+        img.src = `https://drive.google.com/uc?export=view&id=${p.id}`;
+        div.appendChild(img);
+        if(p.metadata) {
+          const caption = document.createElement('p');
+          caption.textContent = `${p.metadata.aircraft || ""} ${p.metadata.reg || ""} at ${p.metadata.airport || ""}`;
+          div.appendChild(caption);
+        }
+        container.appendChild(div);
+      });
+    });
+  });
+</script>
 </body>
 </html>
