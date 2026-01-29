@@ -10,7 +10,8 @@ import sys
 # Configuration
 # -------------------------
 SOURCE_FOLDER = filedialog.askdirectory(title="Select folder with photos")
-DEST_FOLDER = os.path.join(SOURCE_FOLDER, "tagged_photos")
+PARENT_DIR = os.path.dirname(SOURCE_FOLDER)
+DEST_FOLDER = os.path.join(PARENT_DIR, "tagged_photos")
 os.makedirs(DEST_FOLDER, exist_ok=True)
 
 images = [f for f in os.listdir(SOURCE_FOLDER) if f.lower().endswith((".jpg", ".jpeg"))]

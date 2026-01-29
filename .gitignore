@@ -1,3 +1,4 @@
 client_secret.json
 token.pickle
 tagged_photos/*
+src_photos/*
